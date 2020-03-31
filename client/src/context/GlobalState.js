@@ -25,7 +25,12 @@ export const GlobleProvider = ({ children }) => {
         type: "GET_TRANSACTIONS",
         payload: res.data.data
       });
-    } catch (err) {}
+    } catch (err) {
+      dispatch({
+        type: "TRANSACTIONS_ERROR",
+        payload: err.response.data.error
+      });
+    }
   }
 
   function deleteTransection(id) {
