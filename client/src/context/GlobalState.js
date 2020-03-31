@@ -1,9 +1,12 @@
 import React, { createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
+import axios from "axios";
 
 //Initial State
 const initialState = {
-  transactions: []
+  transactions: [],
+  error: null,
+  loading: true
 };
 
 //Create Context
@@ -14,6 +17,17 @@ export const GlobleProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   //Action
+  async function getTransactions() {
+    try {
+      const res = await axios.get("/api/v1/transactions");
+
+      dispatch({
+        type: "GET_TRANSACTIONS",
+        payload: res.data.data
+      });
+    } catch (err) {}
+  }
+
   function deleteTransection(id) {
     dispatch({
       type: "DELETE_TRANSACTION",
